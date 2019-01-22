@@ -1,0 +1,6 @@
+DIAGRAM
+    ABSTRACT CLASS(Foo)
+        ATTRIBUTE(bar)
+        ABSTRACT ATTRIBUTE(baz)
+    END
+END
