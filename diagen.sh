@@ -2,6 +2,7 @@
 
 m4 -P - "$1" <<'MACROS' | dot -Tsvg -o "$2"
 m4_changequote(«, »)
+m4_changecom(«//»)
 
 m4_define(«_FONTNAME», Helvetica)
 m4_define(«_FONTSIZE», 12)
@@ -39,16 +40,34 @@ m4_define(«TYPE», «
     »)
 »)
 
-m4_define(«CLASS», «TYPE($@)»)
+m4_define(«CLASS», «TYPE($1)»)
 m4_define(«INTERFACE», «TYPE($1, interface)»)
 m4_define(«ENUMERATION», «TYPE($1, enumeration)»)
+m4_define(«PROTOCOL», «TYPE($1, protocol)»)
 
-m4_define(«ABSTRACT», «m4_define(«_ABSTRACT»)»)
-m4_define(«STATIC», «m4_define(«_STATIC»)»)
-m4_define(«BIDIRECTIONAL», «m4_define(«_BIDIRECTIONAL»)»)
-m4_define(«BEHAVIOR», «m4_define(«_BEHAVIOR»)»)
-m4_define(«WEAK», «m4_define(«_WEAK»)»)
-# m4_define(«ACTIVE»)
+m4_define(«_MODIFIER», «m4_define(«$1», «m4_define(«_$1»)»)»)
+
+_MODIFIER(«ABSTRACT»)
+_MODIFIER(«STATIC»)
+_MODIFIER(«BIDIRECTIONAL»)
+_MODIFIER(«BEHAVIOR»)
+_MODIFIER(«WEAK»)
+// _MODIFIER(«ACTIVE»)
+
+m4_define(«TYPES», «
+    m4_ifdef(«_ABSTRACT», «
+        TYPE($2, $1) END
+        m4_ifelse($3, «», «», «ABSTRACT TYPES($1, m4_shift(m4_shift($@)))»)
+    », «
+        TYPE($2, $1) END
+        m4_ifelse($3, «», «», «TYPES($1, m4_shift(m4_shift($@)))»)
+    »)
+»)
+
+m4_define(«CLASSES», «TYPES(«», $@)»)
+m4_define(«INTERFACES», «TYPES(interface, $@)»)
+m4_define(«ENUMERATIONS», «TYPES(enumeration, $@)»)
+m4_define(«PROTOCOLS», «TYPES(protocol, $@)»)
 
 m4_define(«ATTRIBUTE», «
     m4_define(«_ATTRIBUTE», $1)
@@ -59,7 +78,7 @@ m4_define(«ATTRIBUTE», «
 »)
 
 m4_define(«OPERATION», «
-    m4_define(«_OPERATION», $1)
+    m4_define(«_OPERATION», m4_ifelse($2, «», $1, «$1 &#8594; $2»))
     m4_ifdef(«_STATIC», «m4_define(«_OPERATION», <u>_OPERATION</u>)»)
     m4_ifdef(«_ABSTRACT», «m4_define(«_OPERATION», <i>_OPERATION</i>)»)
     m4_define(«_OPERATIONS», _OPERATIONS«»_OPERATION<br/>)
@@ -99,7 +118,7 @@ m4_define(«COMPOSITIONS», «{ edge [ arrowtail=diamond dir=both arrowhead=open
 m4_define(«NESTINGS», «{ edge [ arrowhead=odot ] »)
 m4_define(«CRUTCHES», «{ edge [ style=invis ] »)
 
-m4_define(«HORIZONTAL», «m4_define(«_HORIZONTAL»)»)
+_MODIFIER(«HORIZONTAL»)
 
 m4_define(«RELATION», «
     {
