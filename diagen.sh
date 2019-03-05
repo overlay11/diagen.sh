@@ -111,7 +111,10 @@ m4_define(«ASSOCIATIONS», «
     { edge [ m4_ifdef(«_BIDIRECTIONAL», «arrowhead=none», «arrowhead=open») ]
     m4_undefine(«_BIDIRECTIONAL»)
 »)
-m4_define(«GENERALIZATIONS», «{ edge [ arrowhead=empty ] »)
+m4_define(«GENERALIZATIONS», «
+    { edge [ arrowhead=empty m4_ifdef(«_BIDIRECTIONAL», «dir=both arrowtail=empty») ]
+    m4_undefine(«_BIDIRECTIONAL»)
+»)
 m4_define(«IMPLEMENTATIONS», «{ edge [ arrowhead=empty style=dashed ] »)
 m4_define(«AGGREGATIONS», «{ edge [ arrowtail=odiamond dir=both arrowhead=open ] »)
 m4_define(«COMPOSITIONS», «{ edge [ arrowtail=diamond dir=both arrowhead=open ] »)
