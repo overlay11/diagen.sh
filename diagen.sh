@@ -104,7 +104,7 @@ m4_define(«NOTE», «
 »)
 
 m4_define(«DEPENDENCIES», «
-    { edge [ style=dashed m4_ifdef(«_BIDIRECTIONAL», «arrowhead=none», «arrowhead=open») ]
+    { edge [ style=dashed arrowhead=open m4_ifdef(«_BIDIRECTIONAL», «dir=both arrowtail=open») ]
     m4_undefine(«_BIDIRECTIONAL»)
 »)
 m4_define(«ASSOCIATIONS», «
