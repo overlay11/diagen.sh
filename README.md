@@ -78,6 +78,21 @@ Usage:
 
 ![Package containing classes](examples/package.svg)
 
+#### Module Containing Operations and Classes
+
+    DIAGRAM
+        MODULE(foo)
+            OPERATION(bar())
+            OPERATION(baz())
+        END
+
+        NESTINGS
+            {Qux Quux} -> foo
+        END
+    END
+
+![Module containing operations and classes](examples/module.svg)
+
 #### Other Entities
 
     DIAGRAM
