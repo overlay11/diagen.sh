@@ -13,16 +13,16 @@
 <title>foo</title>
 <polygon fill="none" stroke="#000000" points="99.5,-128 96.5,-132 75.5,-132 72.5,-128 44.5,-128 44.5,-72 99.5,-72 99.5,-128"/>
 <polyline fill="none" stroke="#000000" points="45,-106 100,-106 "/>
-<text text-anchor="start" x="64.1592" y="-113.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#000000">foo</text>
+<text text-anchor="start" x="64.1592" y="-113.4" font-family="Helvetica,sans" font-size="12.00" fill="#000000">foo</text>
 <polyline fill="none" stroke="#000000" points="45,-72 100,-72 "/>
-<text text-anchor="start" x="50" y="-91.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#000000">bar()</text>
-<text text-anchor="start" x="50" y="-79.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#000000">baz()</text>
+<text text-anchor="start" x="50" y="-91.4" font-family="Helvetica,sans" font-size="12.00" fill="#000000">bar()</text>
+<text text-anchor="start" x="50" y="-79.4" font-family="Helvetica,sans" font-size="12.00" fill="#000000">baz()</text>
 </g>
 <!-- Qux -->
 <g id="node2" class="node">
 <title>Qux</title>
 <polygon fill="none" stroke="#000000" points="54,-36 0,-36 0,0 54,0 54,-36"/>
-<text text-anchor="middle" x="27" y="-14.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#000000">Qux</text>
+<text text-anchor="middle" x="27" y="-14.4" font-family="Helvetica,sans" font-size="12.00" fill="#000000">Qux</text>
 </g>
 <!-- Qux&#45;&gt;foo -->
 <g id="edge1" class="edge">
@@ -34,7 +34,7 @@
 <g id="node3" class="node">
 <title>Quux</title>
 <polygon fill="none" stroke="#000000" points="144,-36 90,-36 90,0 144,0 144,-36"/>
-<text text-anchor="middle" x="117" y="-14.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#000000">Quux</text>
+<text text-anchor="middle" x="117" y="-14.4" font-family="Helvetica,sans" font-size="12.00" fill="#000000">Quux</text>
 </g>
 <!-- Quux&#45;&gt;foo -->
 <g id="edge2" class="edge">

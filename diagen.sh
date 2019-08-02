@@ -1,11 +1,15 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-m4 -P - "$1" <<'MACROS' | dot -Tsvg -o "$2"
+INFILE=$1; shift
+OUTFILE=$1; shift
+
+m4 -P $@ - "$INFILE" <<'MACROS' | dot -Tsvg -o "$OUTFILE"
+
 m4_changequote(«, »)
 m4_changecom(«//»)
 
-m4_define(«_FONTNAME», Helvetica)
-m4_define(«_FONTSIZE», 12)
+m4_ifdef(«_FONTNAME», «», «m4_define(«_FONTNAME», «Helvetica,sans»)»)
+m4_ifdef(«_FONTSIZE», «», «m4_define(«_FONTSIZE», 12)»)
 
 m4_define(«_COMPARTMENT», <tr><td sides="b" align="left" balign="left">$1</td></tr>)
 
@@ -88,7 +92,7 @@ m4_define(«OPERATION», «
 m4_define(«LITERAL», «m4_define(«_LITERALS», _LITERALS«»$1<br/>)»)
 
 m4_define(«DIAGRAM», «
-    digraph { label=<$1> fontname="_FONTNAME" fontsize=m4_eval(_FONTSIZE * 7/6)
+    digraph "$1" { label=<$1> fontname="_FONTNAME" fontsize=m4_eval(_FONTSIZE * 7/6)
     compound=true nodesep=0.5 labelloc=t
     node [ fontname="_FONTNAME" fontsize=_FONTSIZE ] edge [ fontname="_FONTNAME" fontsize=_FONTSIZE ]
     m4_ifdef(«_BEHAVIOR», «splines=curved node [ shape=Mrecord ]», «rankdir=BT node [ shape=box ]»)
@@ -170,4 +174,5 @@ m4_define(«MODULE», «
 m4_define(«PACKAGE», «
     subgraph "cluster $1" { label="$1" labeljust=r labelloc=b fontsize=_FONTSIZE
 »)
+
 MACROS
