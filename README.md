@@ -168,3 +168,19 @@ Usage:
     END
 
 ![Concurrent activities](examples/fork.svg)
+
+#### Subactivity
+
+    BEHAVIOR DIAGRAM
+        INITIAL_NODE(in)
+        FINAL_NODE(fn)
+
+        SUPERACTION(barbaz)
+            bar -> baz
+        END
+
+        in -> foo -> bar
+        baz -> qux -> fn
+    END
+
+![Subactivity](examples/superaction.svg)
