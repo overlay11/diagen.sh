@@ -18,6 +18,24 @@ m4_ifdef(«_FONTSIZE», «», «m4_define(«_FONTSIZE», 12)»)
 
 m4_define(«_IFEMPTY», «m4_ifelse(«$1», «», «$2», «$3»)»)
 
+m4_define(«_SCRIPT», «<font point-size="m4_eval(_FONTSIZE * 2/3)">«$1»</font>»)
+m4_define(«SUB», «<sub>_SCRIPT(«$1»)</sub>»)
+m4_define(«SUP», «<sup>_SCRIPT(«$1»)</sup>»)
+
+m4_define(«_SUB», «m4_ifelse(
+    m4_eval($1 >= 10), 1,
+    «_SUB(m4_eval($1/10))»
+)&#m4_eval(8320 + $1%10);»)
+
+m4_define(«_SUP», «m4_ifelse(
+    m4_eval($1 >= 10), 1,
+    «_SUP(m4_eval($1/10))»
+)m4_ifelse(
+    m4_eval((0 < $1%10) && ($1%10 < 4)), 1,
+    «&sup«»m4_eval($1%10);»,
+    «&#m4_eval(8304 + $1%10);»
+)»)
+
 m4_define(«_COMPARTMENT», «<tr><td sides="b" align="left" balign="left">«$1»</td></tr>»)
 
 m4_define(«_LABEL», «_IFEMPTY(«$2$3$4», ««$1»», «
@@ -93,7 +111,7 @@ m4_define(«ATTRIBUTE», «
 »)
 
 m4_define(«OPERATION», «
-    m4_define(«_OPERATION», «_IFEMPTY(«$2», ««$1»», ««$1» &#8594; «$2»»)»)
+    m4_define(«_OPERATION», «_IFEMPTY(«$2», ««$1»», ««$1» &rarr; «$2»»)»)
     m4_ifdef(«_STATIC», «m4_define(«_OPERATION», _LQ<u>_OPERATION</u>_RQ)»)
     m4_ifdef(«_ABSTRACT», «m4_define(«_OPERATION», _LQ<i>_OPERATION</i>_RQ)»)
     m4_define(«_OPERATIONS», _LQ«»_OPERATIONS«»_OPERATION<br/>_RQ)
@@ -103,7 +121,7 @@ m4_define(«OPERATION», «
 m4_define(«LITERAL», «m4_define(«_LITERALS», _LQ«»_LITERALS«$1»<br/>_RQ)»)
 
 m4_define(«DIAGRAM», «
-    digraph "«$1»" { label=<«$1»> fontname="_FONTNAME" fontsize=m4_eval(_FONTSIZE * 7/6)
+    digraph "«$1»" { label="«$1»" fontname="_FONTNAME" fontsize=m4_eval(_FONTSIZE * 7/6)
     compound=true nodesep=0.5 labelloc=t
     node [ fontname="_FONTNAME" fontsize=_FONTSIZE ] edge [ fontname="_FONTNAME" fontsize=_FONTSIZE ]
     m4_ifdef(«_BEHAVIOR», «splines=curved node [ shape=Mrecord ]», «rankdir=BT node [ shape=box ]»)
@@ -184,11 +202,13 @@ m4_define(«MODULE», «
 »)
 
 m4_define(«PACKAGE», «
-    subgraph "cluster «$1»" { label="«$1»" labeljust=r labelloc=b fontsize=_FONTSIZE
+    subgraph "cluster «$1»" { _IFEMPTY(«$2», «label="«$1»"», «label=<«$2»>»)
+    labeljust=r labelloc=b fontsize=_FONTSIZE
 »)
 m4_define(«SUPERSTATE», «
-    subgraph "cluster «$1»" { label="«$1»" style=rounded fontsize=_FONTSIZE
+    subgraph "cluster «$1»" { _IFEMPTY(«$2», «label="«$1»"», «label=<«$2»>»)
+    style=rounded fontsize=_FONTSIZE
 »)
-m4_define(«SUPERACTION», «SUPERSTATE(«$1»)»)
+m4_define(«SUPERACTION», «SUPERSTATE($@)»)
 
 MACROS
