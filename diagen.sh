@@ -36,6 +36,8 @@ m4_define(«_SUP», «m4_ifelse(
     «&#m4_eval(8304 + $1%10);»
 )»)
 
+m4_define(«_VAR», «<i>«$1»</i>_IFEMPTY(«$2», «», «SUB(«$2»)»)»)
+
 m4_define(«_COMPARTMENT», «<tr><td sides="b" align="left" balign="left">«$1»</td></tr>»)
 
 m4_define(«_LABEL», «_IFEMPTY(«$2$3$4», ««$1»», «
@@ -82,6 +84,7 @@ _MODIFIER(«ABSTRACT»)
 _MODIFIER(«STATIC»)
 _MODIFIER(«BIDIRECTIONAL»)
 _MODIFIER(«BEHAVIOR»)
+_MODIFIER(«LOGICAL»)
 _MODIFIER(«WEAK»)
 _MODIFIER(«ACTIVE»)
 
@@ -124,8 +127,14 @@ m4_define(«DIAGRAM», «
     digraph "«$1»" { label="«$1»" fontname="_FONTNAME" fontsize=m4_eval(_FONTSIZE * 7/6)
     compound=true nodesep=0.5 labelloc=t
     node [ fontname="_FONTNAME" fontsize=_FONTSIZE ] edge [ fontname="_FONTNAME" fontsize=_FONTSIZE ]
-    m4_ifdef(«_BEHAVIOR», «splines=curved node [ shape=Mrecord ]», «rankdir=BT node [ shape=box ]»)
-    m4_undefine(«_BEHAVIOR»)
+    m4_ifdef(«_BEHAVIOR»,
+        «splines=curved node [ shape=Mrecord ]»,
+        «m4_ifdef(«_LOGICAL»,
+            «node [ shape=Mrecord ]»,
+            «rankdir=BT node [ shape=box ]»
+        )»
+    )
+    m4_undefine(«_BEHAVIOR», «_LOGICAL»)
 »)
 
 m4_define(«_NOTE», 0)
@@ -154,7 +163,29 @@ m4_define(«COMPOSITIONS», «{ edge [ arrowtail=diamond dir=both arrowhead=open
 m4_define(«NESTINGS», «{ edge [ arrowhead=odot ] »)
 m4_define(«CRUTCHES», «{ edge [ style=invis ] »)
 
-_MODIFIER(«HORIZONTAL»)
+m4_define(«CONDITIONS», «
+    { edge [ arrowhead=open m4_ifdef(«_BIDIRECTIONAL», «dir=both arrowtail=open») ]
+    m4_undefine(«_BIDIRECTIONAL»)
+»)
+m4_define(«PREDICATIONS», «{ edge [ arrowhead=open ] »)
+m4_define(«INCLUSIONS», «
+    { edge [ arrowhead=halfopen m4_ifdef(«_BIDIRECTIONAL», «dir=both arrowtail=halfopen») ]
+    m4_undefine(«_BIDIRECTIONAL»)
+»)
+m4_define(«ENTAILMENTS», «
+    { edge [ arrowhead=nonetee m4_ifdef(«_BIDIRECTIONAL», «dir=both arrowtail=nonetee») ]
+    m4_undefine(«_BIDIRECTIONAL»)
+»)
+m4_define(«STRONG_ENTAILMENTS», «ENTAILMENTS($@)»)
+m4_define(«WEAK_ENTAILMENTS», «{ edge [ arrowhead=none dir=both arrowtail=nonecrow ] »)
+m4_define(«MAXIMAL_ENTAILMENTS», «{ edge [ arrowhead=noneteetee ] »)
+m4_define(«CONVERSE_ENTAILMENTS», «{ edge [ arrowhead=none dir=both arrowtail=nonecrowcrow ] »)
+m4_define(«QUASIENTAILMENTS», «{ edge [ arrowhead=vee dir=both arrowtail=nonecrow ] »)
+m4_define(«VARIATIONS», «{ edge [ style=bold ] »)
+
+m4_define(«HORIZONTAL», «
+    _IFEMPTY(«$1», «m4_define(«_HORIZONTAL»)», «{ rank=same «$1» }»)
+»)
 
 m4_define(«RELATION», «
     {
@@ -187,6 +218,11 @@ m4_define(«INITIAL_STATE», «INITIAL_NODE(«$1»)»)
 m4_define(«FINAL_NODE», «"«$1»" [ shape=doublecircle label="" style=filled fillcolor=black width=0.25 ]»)
 m4_define(«FINAL_STATE», «FINAL_NODE(«$1»)»)
 m4_define(«ARTIFACT», «"«$1»" [ shape=box label=<artifact<br/>\N> ]»)
+
+m4_define(«TERM», «ENTITY($@)»)
+m4_define(«STATEMENT», «_IFEMPTY(«$2», «
+    subgraph "cluster «$1»" { style=rounded
+», «STATE($@)»)»)
 
 m4_define(«MODULE», «
     m4_define(«_TYPES»)
