@@ -13,7 +13,7 @@ clean:
 	rm -f $(HTML)
 
 %.html: %.md
-	pandoc -s -o $@ $<
+	pandoc -s -f gfm -o $@ $<
 
 %.svg: %.gv.m4
 	./diagen.sh $< $@

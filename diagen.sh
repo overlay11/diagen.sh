@@ -3,7 +3,7 @@
 INFILE=$1; shift
 OUTFILE=$1; shift
 
-m4 -P $@ - "$INFILE" <<'MACROS' | dot -Tsvg -o "$OUTFILE"
+m4 -P "$@" - "$INFILE" <<'MACROS' | dot -Tsvg -o "$OUTFILE"
 
 m4_changequote(«, »)
 m4_changecom(/*, */)
